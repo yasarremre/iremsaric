@@ -43,21 +43,15 @@ export default function ContactForm() {
         setIsSubmitting(true);
         try {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-            console.log("Submitting to API URL:", apiUrl); // Debug log
-
             await axios.post(`${apiUrl}/api/inquiry`, data);
             toast.success("Mesajınız başarıyla gönderildi!", {
                 description: "En kısa sürede size dönüş yapacağız.",
             });
             reset();
-        } catch (error: any) {
-            console.error("Submission Error Full:", error);
-            if (error.response) {
-                console.error("Error Response Data:", error.response.data);
-                console.error("Error Response Status:", error.response.status);
-            }
+        } catch (error) {
+            console.error(error);
             toast.error("Bir hata oluştu", {
-                description: "Detaylar konsolda. Lütfen kontrol ediniz.",
+                description: "Lütfen daha sonra tekrar deneyiniz.",
             });
         } finally {
             setIsSubmitting(false);
