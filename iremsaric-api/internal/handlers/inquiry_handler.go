@@ -33,7 +33,13 @@ func (h *InquiryHandler) CreateInquiry(c *gin.Context) {
 
 func (h *InquiryHandler) GetInquiries(c *gin.Context) {
 	// Simple Admin Auth Middleware check (can be moved to router)
+	// Simple Admin Auth Middleware check (can be moved to router)
+	// Allow passing key via Header OR Query Param (for browser access)
 	apiKey := c.GetHeader("X-API-KEY")
+	if apiKey == "" {
+		apiKey = c.Query("key")
+	}
+
 	// TODO: Move this key to environment variable
 	if apiKey != "secret-admin-key" {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
