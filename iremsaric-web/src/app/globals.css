@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+:root {
+  --background: #F9FAFB;
+  --foreground: #374151;
+
+  /* Custom Brand Colors */
+  --primary: #C2185B;
+  --secondary: #FDD835;
+  --accent: #8EC5D3;
+
+  --surface-light: #FFFFFF;
+  --surface-dark: #1F2937;
+
+  --background-light: #F9FAFB;
+  --background-dark: #111827;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+
+  --color-surface-light: var(--surface-light);
+  --color-surface-dark: var(--surface-dark);
+
+  --color-background-light: var(--background-light);
+  --color-background-dark: var(--background-dark);
+
+  --font-display: var(--font-lora);
+  --font-body: var(--font-inter);
+}
+
+/* Dark mode removed to force light theme per user request */
+/* @media (prefers-color-scheme: dark) { ... } */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}

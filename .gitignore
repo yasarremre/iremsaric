@@ -1,0 +1,25 @@
+# General
+.DS_Store
+*.log
+tmp/
+
+# IDEs
+.vscode/
+.idea/
+
+# Node (Frontend)
+node_modules/
+.next/
+dist/
+build/
+.env*.local
+iremsaric-web/.env*.local
+iremsaric-web/node_modules/
+iremsaric-web/.next/
+
+# Go (Backend)
+iremsaric-api/server
+iremsaric-api/server.exe
+*.exe
+*.test
+*.out
