@@ -34,15 +34,27 @@ func main() {
 	r := gin.Default()
 
 	// 5. Middleware (CORS)
+	// 5. Middleware (CORS)
 	r.Use(func(c *gin.Context) {
+		clientOrigin := c.Request.Header.Get("Origin")
 		allowedOrigin := os.Getenv("ALLOWED_ORIGIN")
-		if allowedOrigin == "" {
-			allowedOrigin = "http://localhost:3000"
+
+		// Dynamic CORS: Allow requests from the specific allowed origin OR any Cloudflare Pages preview/production URL
+		if clientOrigin == allowedOrigin ||
+			(len(clientOrigin) > 10 && clientOrigin[len(clientOrigin)-10:] == ".pages.dev") ||
+			clientOrigin == "http://localhost:3000" {
+			c.Writer.Header().Set("Access-Control-Allow-Origin", clientOrigin)
+		} else {
+			// Fallback to configured origin (or localhost) to fail safely but possibly allow simple GETs if browser permits (unlikely for POST)
+			if allowedOrigin == "" {
+				allowedOrigin = "http://localhost:3000"
+			}
+			c.Writer.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
 		}
 
-		c.Writer.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
